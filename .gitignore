@@ -18,13 +18,8 @@ pids
 *.pid.lock
 
 # Runtime data
-dist/
-build/
-.cache/
-.tmp/
-temp/
-coverage/
-*.tsbuildinfo
+
+
 
 # dotenv environment files
 .env
