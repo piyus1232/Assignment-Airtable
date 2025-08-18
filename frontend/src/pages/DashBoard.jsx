@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom"; // import useSearchParams
+import { Link, useSearchParams } from "react-router-dom";
 import api from "../utils/api";
 
 const Dashboard = () => {
   const [forms, setForms] = useState([]);
   const [searchParams] = useSearchParams();
 
+  // Step 1: Store user_id from URL into localStorage and clean up URL
   useEffect(() => {
-    // Grab user_id from URL query and save it to localStorage
     const userId = searchParams.get("user_id");
     if (userId) {
       localStorage.setItem("user_id", userId);
       console.log("💾 Stored user_id in localStorage:", userId);
+
+      // Clean the URL to remove ?user_id=...
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, "", newUrl);
     }
   }, [searchParams]);
 
+  // Step 2: Wait for user_id before making API request
   useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) {
+      console.warn("🚫 No user_id in localStorage. Skipping API call.");
+      return;
+    }
+
     const fetchForms = async () => {
       try {
         const res = await api.get("/forms/my");
@@ -24,14 +35,14 @@ const Dashboard = () => {
         console.error("❌ Failed to load forms", err.response?.data || err.message);
       }
     };
-    fetchForms();
-  }, []);
 
-  // rest of your component remains the same
+    fetchForms();
+  }, [searchParams]); // Rerun if query param changes
+
+  // UI Rendering
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6 flex justify-center">
       <div className="w-full max-w-4xl">
-        {/* Header */}
         <h1 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-2">
           📋 My Forms
         </h1>
