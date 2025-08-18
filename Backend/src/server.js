@@ -1,7 +1,22 @@
-import app from "./app.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
 
-const PORT = process.env.PORT || 5000;
+dotenv.config();
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 14 * 24 * 60 * 60, // sessions last 14 days
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // true in production
+      httpOnly: true,
+      sameSite: "lax",
+    },
+  })
+);
