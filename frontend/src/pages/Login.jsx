@@ -7,7 +7,7 @@ const Login = () => {
   const error = searchParams.get("error");
 
   const handleLogin = () => {
-    window.location.href = "https://assignment-airtable-k8ol.onrender.com/api/auth/airtable/login";
+    window.location.href = "https://assignment-airtable.vercel.app/api/auth/airtable/login";
   };
 
   return (
