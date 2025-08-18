@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom"; // import useSearchParams
 import api from "../utils/api";
 
 const Dashboard = () => {
   const [forms, setForms] = useState([]);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    // Grab user_id from URL query and save it to localStorage
+    const userId = searchParams.get("user_id");
+    if (userId) {
+      localStorage.setItem("user_id", userId);
+      console.log("💾 Stored user_id in localStorage:", userId);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchForms = async () => {
@@ -17,6 +27,7 @@ const Dashboard = () => {
     fetchForms();
   }, []);
 
+  // rest of your component remains the same
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6 flex justify-center">
       <div className="w-full max-w-4xl">
