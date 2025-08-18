@@ -98,6 +98,6 @@ export const airtableCallback = async (req, res) => {
       "OAuth token exchange failed:",
       err.response?.data || err.message
     );
-    res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
+    res.redirect(`${process.env.CLIENT_URL}/dashboard?error=oauth_failed`);
   }
 };
