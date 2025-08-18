@@ -12,6 +12,7 @@ connectDB();
 
 const app = express();
 console.log("SESSION_SECRET exists?", !!process.env.SESSION_SECRET);
+app.set("trust proxy", 1);
 
 app.use(
   session({
