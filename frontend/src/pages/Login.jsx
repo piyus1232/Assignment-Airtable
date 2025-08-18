@@ -7,7 +7,7 @@ const Login = () => {
   const error = searchParams.get("error");
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/airtable/login";
+    window.location.href = "https://assignment-airtable-1-backend.onrender.com/api/auth/airtable/login";
   };
 
   return (
