@@ -4,28 +4,34 @@ import api from "../utils/api";
 
 const Dashboard = () => {
   const [forms, setForms] = useState([]);
+  const [userId, setUserId] = useState(null);
   const [searchParams] = useSearchParams();
 
-  // Step 1: Store user_id from URL into localStorage and clean up URL
+  // Step 1: Extract and store user_id
   useEffect(() => {
-    const userId = searchParams.get("user_id");
-    if (userId) {
-      localStorage.setItem("user_id", userId);
-      console.log("💾 Stored user_id in localStorage:", userId);
+    const idFromUrl = searchParams.get("user_id");
+    if (idFromUrl) {
+      localStorage.setItem("user_id", idFromUrl);
+      setUserId(idFromUrl);
+      console.log("💾 Stored user_id from URL:", idFromUrl);
 
-      // Clean the URL to remove ?user_id=...
+      // Clean URL
       const newUrl = window.location.pathname;
       window.history.replaceState({}, "", newUrl);
+    } else {
+      const idFromStorage = localStorage.getItem("user_id");
+      if (idFromStorage) {
+        setUserId(idFromStorage);
+        console.log("💾 Loaded user_id from localStorage:", idFromStorage);
+      } else {
+        console.warn("🚫 No user_id found");
+      }
     }
   }, [searchParams]);
 
-  // Step 2: Wait for user_id before making API request
+  // Step 2: Fetch forms when userId is available
   useEffect(() => {
-    const userId = localStorage.getItem("user_id");
-    if (!userId) {
-      console.warn("🚫 No user_id in localStorage. Skipping API call.");
-      return;
-    }
+    if (!userId) return;
 
     const fetchForms = async () => {
       try {
@@ -37,9 +43,8 @@ const Dashboard = () => {
     };
 
     fetchForms();
-  }, [searchParams]); // Rerun if query param changes
+  }, [userId]); // Depend on userId
 
-  // UI Rendering
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6 flex justify-center">
       <div className="w-full max-w-4xl">
