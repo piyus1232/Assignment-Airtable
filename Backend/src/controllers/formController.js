@@ -26,7 +26,7 @@ export const createForm = async (req, res) => {
     console.log("📩 Incoming payload for createForm:", req.body);
     console.log("👤 Auth user:", req.user);
 
-    const { baseId, tableId, questions } = req.body;
+    const { baseId, tableId, questions,title } = req.body;
 
     if (!questions || !Array.isArray(questions) || questions.length === 0) {
       return res.status(400).json({ error: "At least one question is required" });
@@ -34,6 +34,7 @@ export const createForm = async (req, res) => {
 
     const form = await Form.create({
       owner: req.user._id,   // 👈 required
+      title:title || null,
       baseId: baseId || null,
       tableId: tableId || null,
       questions,
