@@ -5,7 +5,8 @@ import User from "../models/User.js";
 
 // utils
 function base64URLEncode(buffer) {
-  return buffer.toString("base64")
+  return buffer
+    .toString("base64")
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/, "");
@@ -36,7 +37,7 @@ export const airtableCallback = async (req, res) => {
   const { code, state } = req.query;
 
   if (!state || state !== req.session.state) {
-    return res.redirect("http://localhost:5173/login?error=invalid_state");
+    return res.redirect(`${process.env.CLIENT_URL}/login?error=invalid_state`);
   }
 
   try {
@@ -66,11 +67,14 @@ export const airtableCallback = async (req, res) => {
     let email = "unknown@example.com";
     try {
       const profile = await axios.get("https://api.airtable.com/v0/meta/whoami", {
-        headers: { Authorization: `Bearer ${tokens.access_token}` }
+        headers: { Authorization: `Bearer ${tokens.access_token}` },
       });
       email = profile.data?.user?.email || email;
     } catch (err) {
-      console.warn("Could not fetch Airtable user profile:", err.response?.data || err.message);
+      console.warn(
+        "Could not fetch Airtable user profile:",
+        err.response?.data || err.message
+      );
     }
 
     // 🔹 Save/update Mongo user
@@ -87,10 +91,13 @@ export const airtableCallback = async (req, res) => {
       await user.save();
     }
 
-    // Redirect with user_id
-    res.redirect(`http://localhost:5173/dashboard?user_id=${user._id}`);
+    // ✅ Redirect to frontend (production)
+    res.redirect(`${process.env.CLIENT_URL}/dashboard?user_id=${user._id}`);
   } catch (err) {
-    console.error("OAuth token exchange failed:", err.response?.data || err.message);
-    res.redirect("http://localhost:5173/login?error=oauth_failed");
+    console.error(
+      "OAuth token exchange failed:",
+      err.response?.data || err.message
+    );
+    res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
   }
 };
