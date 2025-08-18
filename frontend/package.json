@@ -5,11 +5,12 @@
   "type": "module",
 "scripts": {
   "dev": "vite",
+  "prebuild": "npm install vite --global",
   "build": "vite build",
-  "postinstall": "npm run build",
   "lint": "eslint .",
   "preview": "vite preview"
 }
+
 
 ,
   "dependencies": {
