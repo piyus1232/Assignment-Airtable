@@ -47,7 +47,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6 flex justify-center">
         <nav className="bg-blue-600 text-white px-6 py-4 shadow-md flex justify-between items-center">
-      <h1 className="text-xl font-bold">{title}</h1>
+{/*       <h1 className="text-xl font-bold">{title}</h1> */}
       <div className="space-x-4">
         <Link to="/dashboard" className="hover:underline">Dashboard</Link>
         <Link to="/create" className="hover:underline">Create Form</Link>
