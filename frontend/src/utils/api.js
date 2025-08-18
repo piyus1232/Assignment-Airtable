@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://assignment-airtable.vercel.app/api", 
+  baseURL: "https://assignment-airtable-k8ol.onrender.com/api", 
   withCredentials: true,
 });
 
