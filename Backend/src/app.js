@@ -11,6 +11,8 @@ dotenv.config();
 connectDB();
 
 const app = express();
+console.log("SESSION_SECRET exists?", !!process.env.SESSION_SECRET);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "fallback-secret",
