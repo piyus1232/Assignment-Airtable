@@ -13,7 +13,7 @@ connectDB();
 const app = express();
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "fallback-secret"",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
