@@ -7,29 +7,28 @@ const Dashboard = () => {
   const [userId, setUserId] = useState(null);
   const [searchParams] = useSearchParams();
 
-  // Step 1: Extract and store user_id
+  // ✅ On first render, extract user_id from URL or localStorage
   useEffect(() => {
-    const idFromUrl = searchParams.get("user_id");
-    if (idFromUrl) {
-      localStorage.setItem("user_id", idFromUrl);
-      setUserId(idFromUrl);
-      console.log("💾 Stored user_id from URL:", idFromUrl);
+    const urlUserId = searchParams.get("user_id");
 
-      // Clean URL
+    if (urlUserId) {
+      localStorage.setItem("user_id", urlUserId);
+      setUserId(urlUserId);
+      console.log("💾 Stored user_id from URL:", urlUserId);
+
+      // ✅ Clean up the URL
       const newUrl = window.location.pathname;
       window.history.replaceState({}, "", newUrl);
     } else {
-      const idFromStorage = localStorage.getItem("user_id");
-      if (idFromStorage) {
-        setUserId(idFromStorage);
-        console.log("💾 Loaded user_id from localStorage:", idFromStorage);
-      } else {
-        console.warn("🚫 No user_id found");
+      const storedUserId = localStorage.getItem("user_id");
+      if (storedUserId) {
+        setUserId(storedUserId);
+        console.log("💾 Loaded user_id from localStorage:", storedUserId);
       }
     }
   }, [searchParams]);
 
-  // Step 2: Fetch forms when userId is available
+  // ✅ Fetch forms *only when* userId is ready
   useEffect(() => {
     if (!userId) return;
 
@@ -43,7 +42,7 @@ const Dashboard = () => {
     };
 
     fetchForms();
-  }, [userId]); // Depend on userId
+  }, [userId]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6 flex justify-center">
