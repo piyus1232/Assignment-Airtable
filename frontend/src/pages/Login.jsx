@@ -1,10 +1,20 @@
-import React from "react";
+
+
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
   const error = searchParams.get("error");
+
+  useEffect(() => {
+    const userId = searchParams.get("user_id");
+    if (userId) {
+      localStorage.setItem("user_id", userId);
+      console.log("📝 Stored user_id in localStorage:", userId);
+    }
+  }, [searchParams]);
 
   const handleLogin = () => {
     window.location.href = "https://assignment-airtable-k8ol.onrender.com/api/auth/airtable/login";
