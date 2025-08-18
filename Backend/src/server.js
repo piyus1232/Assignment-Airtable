@@ -19,4 +19,8 @@ app.use(
       sameSite: "lax",
     },
   })
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> 170afc4 (Added connect-mongo and updated server.js for MongoStore)
